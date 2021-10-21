@@ -3,8 +3,8 @@
 
 typedef struct ponto {
     
-    float x;
-    float y;
+    double x;
+    double y;
 
 } Ponto;
 
@@ -43,7 +43,7 @@ Ponto* lerArquivo(char nomeArquivo[], int *tam){
     pontos = (Ponto*) malloc ((*tam) * sizeof (Ponto));
 
     for(int i = 0; i < (*tam); i++)
-        fscanf(arquivo, "%f %f", &pontos[i].x, &pontos[i].y);
+        fscanf(arquivo, "%lf %lf", &pontos[i].x, &pontos[i].y);
         
     fclose(arquivo);
 
@@ -54,6 +54,6 @@ Ponto* lerArquivo(char nomeArquivo[], int *tam){
 void imprimirVetor(Ponto pontos[], int tam){
 
     for(int i = 0; i < tam; i++)
-        printf("%f %f\n", pontos[i].x, pontos[i].y);
+        printf("%lf %lf\n", pontos[i].x, pontos[i].y);
 
 }
