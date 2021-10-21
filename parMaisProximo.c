@@ -76,6 +76,7 @@ Ponto* forcaBruta3Pontos(Ponto pontos[]){
             float aux = calcularDistanciaPontos(pontos[i], pontos[j]);
 
             if(aux < distancia){
+                
                 distancia = aux;
                 menorDistPar[0] = pontos[i];
                 menorDistPar[1] = pontos[j];
