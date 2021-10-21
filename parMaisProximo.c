@@ -15,6 +15,11 @@ Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio);
+void imprimirParMaisProximo(Ponto pontos[], int tam, double *menorDistancia);
+double calcularMenorDistancia(Ponto pontos[], int esquerda, int direita);
+double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia);
+double min(double x, double y);
+double modulo(double num);
 
 int main(){
 
@@ -25,9 +30,7 @@ int main(){
     pontos = lerArquivo("teste.txt", &tam);
     imprimirVetor(pontos, tam);
 
-    printf("\n");
-    mergeSort(pontos, 0, tam - 1);
-    imprimirVetor(pontos, tam);
+    imprimirParMaisProximo(pontos, tam, &menorDistancia);
 
     return 0;
 
@@ -172,3 +175,68 @@ void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio){
     free(aux);
 
 }
+
+void imprimirParMaisProximo(Ponto pontos[], int tam, double *menorDistancia){
+
+    mergeSort(pontos, 0, tam - 1);
+
+    (*menorDistancia) = calcularMenorDistancia(pontos, 0, tam - 1);
+
+    printf("%lf", (*menorDistancia));
+
+}
+
+double calcularMenorDistancia(Ponto pontos[], int esquerda, int direita){
+
+    Ponto *menorDistPar, *aux;
+    double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
+    int meio = (esquerda + direita) / 2, tam = (direita - esquerda + 1), itrAux = 0;
+    xMeio = pontos[meio].x;
+    
+    if(tam <= 3){
+
+        menorDistPar = forcaBruta3Pontos(pontos, &menorDistancia);
+        return menorDistancia;
+
+    }
+
+    distanciaEsquerda = calcularMenorDistancia(pontos, esquerda, meio);
+    distanciaDireita = calcularMenorDistancia(pontos, meio + 1, direita);
+    menorDistancia = min(distanciaEsquerda, distanciaDireita);
+    aux = (Ponto*) malloc (tam * sizeof (Ponto));
+
+    for(int i = 0; i < tam; i++){
+
+        if(modulo(pontos[i].x - xMeio) < menorDistancia){
+
+            aux[itrAux] = pontos[i];
+            itrAux++;
+
+        }
+            
+    }
+
+    menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia);
+
+    return min(menorDistancia, menorDistCombinacao);
+
+}
+
+double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia){
+
+    return 1;
+
+}
+
+double min(double x, double y){
+
+    return x > y ? y : x;
+
+}
+
+double modulo(double num){
+
+    return num >= 0 ? num : (-1) * num;
+
+}
+
