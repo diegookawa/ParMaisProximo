@@ -11,15 +11,22 @@ typedef struct ponto {
 
 Ponto* lerArquivo(char nomeArquivo[], int *tam);
 void imprimirVetor(Ponto pontos[], int tam);
-Ponto* forcaBruta3Pontos(Ponto pontos[]);
+Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
+void mergeSort(Ponto pontos[], int esquerda, int direita);
+void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio);
 
 int main(){
 
-    Ponto *pontos, *menor;
+    Ponto *pontos, *parMaisProximo;
     int tam;
+    double menorDistancia;
 
     pontos = lerArquivo("teste.txt", &tam);
+    imprimirVetor(pontos, tam);
+
+    printf("\n");
+    mergeSort(pontos, 0, tam - 1);
     imprimirVetor(pontos, tam);
 
     return 0;
@@ -61,13 +68,13 @@ void imprimirVetor(Ponto pontos[], int tam){
 
 }
 
-Ponto* forcaBruta3Pontos(Ponto pontos[]){
+Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia){
 
     Ponto *menorDistPar;
 
     menorDistPar = (Ponto*) malloc (2 * sizeof (Ponto));
 
-    double distancia = calcularDistanciaPontos(pontos[0], pontos[1]);
+    (*distancia) = calcularDistanciaPontos(pontos[0], pontos[1]);
 
     for(int i = 0; i < 3; i++){
 
@@ -75,9 +82,9 @@ Ponto* forcaBruta3Pontos(Ponto pontos[]){
 
             float aux = calcularDistanciaPontos(pontos[i], pontos[j]);
 
-            if(aux < distancia){
-                
-                distancia = aux;
+            if(aux < (*distancia)){
+
+                (*distancia) = aux;
                 menorDistPar[0] = pontos[i];
                 menorDistPar[1] = pontos[j];
 
@@ -98,5 +105,70 @@ double calcularDistanciaPontos(Ponto p1, Ponto p2){
     distancia = sqrt(pow((p1.x - p2.x) , 2) + pow((p1.y - p2.y), 2));
 
     return distancia;
+
+}
+
+void mergeSort(Ponto pontos[], int esquerda, int direita){
+
+    if(esquerda < direita){
+
+        int meio = (esquerda + direita) / 2;
+
+        mergeSort(pontos, esquerda, meio);
+        mergeSort(pontos, meio + 1, direita);
+        combinarMerge(pontos, esquerda, direita, meio);
+
+    }
+
+    return;
+
+}
+
+void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio){
+
+    int itrEsquerda = esquerda, itrDireita = meio + 1, itrAux = 0, tam = direita - esquerda + 1;
+    Ponto* aux;
+    aux = (Ponto*) malloc (tam * sizeof (Ponto));
+
+    while(itrEsquerda <= meio && itrDireita <= direita){
+
+        if(pontos[itrDireita].x > pontos[itrEsquerda].x){
+
+            aux[itrAux] = pontos[itrEsquerda];
+            itrEsquerda++;
+
+        }
+
+        else {
+
+            aux[itrAux] = pontos[itrDireita];
+            itrDireita++;
+
+        }
+
+        itrAux++;
+
+    }
+
+    while(itrEsquerda <= meio){
+
+        aux[itrAux] = pontos[itrEsquerda];
+        itrEsquerda++;
+        itrAux++;
+
+    }
+
+    while(itrDireita <= direita){
+
+        aux[itrAux] = pontos[itrDireita];
+        itrDireita++;
+        itrAux++;
+
+    }
+
+    for(itrAux = esquerda; itrAux <= direita; itrAux++)
+        pontos[itrAux] = aux[itrAux - esquerda];
+
+    free(aux);
 
 }
