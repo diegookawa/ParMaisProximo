@@ -16,10 +16,11 @@ double calcularDistanciaPontos(Ponto p1, Ponto p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
 void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia);
-double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita);
+double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita, int tam);
 double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, int tam);
 double min(double x, double y);
 double modulo(double num);
+double algoritmoForcaBruta(Ponto pontos[], int tam);
 
 int main(){
 
@@ -31,6 +32,7 @@ int main(){
     pontosY = lerArquivo("teste.txt", &tam);
 
     imprimirParMaisProximo(pontosX, pontosY, tam, &menorDistancia);
+    printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
 
     return 0;
 
@@ -203,28 +205,28 @@ void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *m
     mergeSort(pontosX, 0, tam - 1, 'x');  
     mergeSort(pontosY, 0, tam - 1, 'y');  
 
-    (*menorDistancia) = calcularMenorDistancia(pontosX, pontosY, 0, tam - 1);
+    (*menorDistancia) = calcularMenorDistancia(pontosX, pontosY, 0, tam - 1, tam);
 
     printf("%lf", (*menorDistancia));
 
 }
 
-double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita){
+double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita, int tam){
 
     Ponto *menorDistPar, *aux;
     double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
-    int meio = (esquerda + direita) / 2, tam = (direita - esquerda + 1), itrAux = 0;
+    int meio = (esquerda + direita) / 2, tamRelativo = (direita - esquerda + 1), itrAux = 0;
     xMeio = pontosX[meio].x;
     
-    if(tam <= 3){
+    if(tamRelativo <= 3){
 
         menorDistPar = forcaBruta3Pontos(pontosX, &menorDistancia);
         return menorDistancia;
 
     }
 
-    distanciaEsquerda = calcularMenorDistancia(pontosX, pontosY, esquerda, meio);
-    distanciaDireita = calcularMenorDistancia(pontosX, pontosY, meio + 1, direita);
+    distanciaEsquerda = calcularMenorDistancia(pontosX, pontosY, esquerda, meio, tam);
+    distanciaDireita = calcularMenorDistancia(pontosX, pontosY, meio + 1, direita, tam);
     menorDistancia = min(distanciaEsquerda, distanciaDireita);
     aux = (Ponto*) malloc (tam * sizeof (Ponto));
 
@@ -251,7 +253,7 @@ double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, in
 
         int j = i + 1;
 
-        while(j < itr && (modulo(pontos[j].y - pontos[i].y) < distancia)){
+        while(j < itr && (pontos[j].y - pontos[i].y) < distancia){
 
             int aux = calcularDistanciaPontos(pontos[i], pontos[j]);
             if(aux < distancia)
@@ -275,7 +277,26 @@ double min(double x, double y){
 
 double modulo(double num){
 
-    return num >= 0 ? num : (-1) * num;
+    return num >= 0 ? num : (-1.0) * num;
 
 }
 
+double algoritmoForcaBruta(Ponto pontos[], int tam){
+
+    double distancia = calcularDistanciaPontos(pontos[0], pontos[1]);
+
+    for(int i = 0; i < tam; i++){
+
+        for(int j = 0; j < tam; j++){
+
+            double aux = calcularDistanciaPontos(pontos[i], pontos[j]);
+            if(aux < distancia && aux != 0)
+                distancia = aux;
+
+        }
+
+    }
+
+    return distancia;
+
+}
