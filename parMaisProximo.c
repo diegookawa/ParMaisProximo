@@ -255,7 +255,7 @@ double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, in
 
         while(j < itr && (pontos[j].y - pontos[i].y) < distancia){
 
-            int aux = calcularDistanciaPontos(pontos[i], pontos[j]);
+            double aux = calcularDistanciaPontos(pontos[i], pontos[j]);
             if(aux < distancia)
                 distancia = aux;
 
