@@ -34,6 +34,9 @@ int main(){
     imprimirParMaisProximo(pontosX, pontosY, tam, &menorDistancia);
     //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
 
+    free(pontosX);
+    free(pontosY);
+    
     return 0;
 
 }
@@ -241,6 +244,8 @@ double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, in
     }
 
     menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia, tam);
+
+    free(aux);
 
     return min(menorDistancia, menorDistCombinacao);
 
