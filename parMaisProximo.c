@@ -32,7 +32,7 @@ int main(){
     pontosY = lerArquivo("teste.txt", &tam);
 
     imprimirParMaisProximo(pontosX, pontosY, tam, &menorDistancia);
-    printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
+    //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
 
     return 0;
 
@@ -43,7 +43,6 @@ Ponto* lerArquivo(char nomeArquivo[], int *tam){
     FILE *arquivo;
     Ponto *pontos;
     arquivo = fopen(nomeArquivo, "r");
-    int tamanhoArquivo;
 
     if(arquivo == NULL){
 
@@ -277,7 +276,7 @@ double min(double x, double y){
 
 double modulo(double num){
 
-    return num >= 0 ? num : (-1.0) * num;
+    return num >= 0 ? num : (-1) * num;
 
 }
 
