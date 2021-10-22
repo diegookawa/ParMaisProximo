@@ -17,7 +17,7 @@ void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
 void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia);
 double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita);
-double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia);
+double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, int tam);
 double min(double x, double y);
 double modulo(double num);
 
@@ -230,24 +230,40 @@ double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, in
 
     for(int i = 0; i < tam; i++){
 
-        if(modulo(pontosX[i].x - xMeio) < menorDistancia){
+        if(modulo(pontosY[i].x - xMeio) < menorDistancia){
 
-            aux[itrAux] = pontosX[i];
+            aux[itrAux] = pontosY[i];
             itrAux++;
 
         }
             
     }
 
-    menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia);
+    menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia, tam);
 
     return min(menorDistancia, menorDistCombinacao);
 
 }
 
-double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia){
+double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, int tam){
 
-    return 1;
+    for(int i = 0; i < tam - 1; i++){
+
+        int j = i + 1;
+
+        while(j < itr && (modulo(pontos[j].y - pontos[i].y) < distancia)){
+
+            int aux = calcularDistanciaPontos(pontos[i], pontos[j]);
+            if(aux < distancia)
+                distancia = aux;
+
+            j++;
+
+        }
+
+    }
+
+    return distancia;
 
 }
 
