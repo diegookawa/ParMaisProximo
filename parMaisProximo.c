@@ -218,7 +218,7 @@ void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *m
 double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
 
     int meio = tam / 2, itrFronteira = 0, itrYEsquerda = 0, itrYDireita = 0;
-    Ponto *menorDistPar, *fronteira, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];;
+    Ponto *menorDistPar, *fronteira, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];
     double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
     xMeio = pontosX[meio].x;
     
