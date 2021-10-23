@@ -217,9 +217,9 @@ void imprimirParMaisProximo(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], in
 
 double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam){
 
-    Ponto *menorDistPar, *aux;
-    double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
     int meio = tam / 2, itrAux = 0, itrYEsquerda = 0, itrYDireita = 0;
+    Ponto *menorDistPar, *aux, *pontosXDireita = pontosX + meio, yEquerda[meio], yDireita[tam - meio];;
+    double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
     xMeio = pontosX[meio].x;
     
     if(tam <= 3){
@@ -228,9 +228,6 @@ double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], 
         return menorDistancia;
 
     }
-
-    Ponto yEquerda[meio];
-    Ponto yDireita[tam - meio];
 
     for(int i = 0; i < tam; i++){
 
@@ -251,7 +248,7 @@ double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], 
     }
 
     distanciaEsquerda = calcularMenorDistancia(pontos, pontosX, yEquerda, meio);
-    distanciaDireita = calcularMenorDistancia(pontos, pontosX + meio, yDireita,  tam - meio);
+    distanciaDireita = calcularMenorDistancia(pontos, pontosXDireita, yDireita,  tam - meio);
     menorDistancia = min(distanciaEsquerda, distanciaDireita);
 
     aux = (Ponto*) malloc (tam * sizeof (Ponto));
