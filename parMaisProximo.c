@@ -11,31 +11,33 @@ typedef struct ponto {
 
 Ponto* lerArquivo(char nomeArquivo[], int *tam);
 void imprimirVetor(Ponto pontos[], int tam);
-Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia, int esquerda, int direita);
+Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
-void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia);
-double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita, int tam);
-double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, int tam);
+void imprimirParMaisProximo(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia);
+double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam);
+double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia);
 double min(double x, double y);
 double modulo(double num);
 double algoritmoForcaBruta(Ponto pontos[], int tam);
 
 int main(){
 
-    Ponto *pontosX, *pontosY, *parMaisProximo;
+    Ponto *pontos, *pontosX, *pontosY, *parMaisProximo;
     int tam;
     double menorDistancia;
 
+    pontos = lerArquivo("teste.txt", &tam);
     pontosX = lerArquivo("teste.txt", &tam);
     pontosY = lerArquivo("teste.txt", &tam);
 
-    imprimirParMaisProximo(pontosX, pontosY, tam, &menorDistancia);
+    imprimirParMaisProximo(pontos, pontosX, pontosY, tam, &menorDistancia);
     //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
 
     free(pontosX);
     free(pontosY);
+    free(pontos);
 
     return 0;
 
@@ -75,7 +77,7 @@ void imprimirVetor(Ponto pontos[], int tam){
 
 }
 
-Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia, int esquerda, int direita){
+Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia){
 
     Ponto *menorDistPar;
 
@@ -83,9 +85,9 @@ Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia, int esquerda, int di
 
     (*distancia) = calcularDistanciaPontos(pontos[0], pontos[1]);
 
-    for(int i = esquerda; i < direita - esquerda + 1; i++){
+    for(int i = 0; i < 3; i++){
 
-        for(int j = i + 1; j < direita - esquerda + 1; j++){
+        for(int j = i + 1; j < 3; j++){
 
             float aux = calcularDistanciaPontos(pontos[i], pontos[j]);
 
@@ -202,37 +204,59 @@ void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coo
 
 }
 
-void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia){
+void imprimirParMaisProximo(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia){
 
     mergeSort(pontosX, 0, tam - 1, 'x');  
     mergeSort(pontosY, 0, tam - 1, 'y');  
 
-    (*menorDistancia) = calcularMenorDistancia(pontosX, pontosY, 0, tam - 1, tam);
+    (*menorDistancia) = calcularMenorDistancia(pontos, pontosX, pontosY, tam);
 
     printf("%lf", (*menorDistancia));
 
 }
 
-double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, int direita, int tam){
+double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam){
 
     Ponto *menorDistPar, *aux;
     double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
-    int meio = (esquerda + direita) / 2, tamRelativo = (direita - esquerda + 1), itrAux = 0;
+    int meio = tam / 2, itrAux = 0, itrYEsquerda = 0, itrYDireita = 0;
     xMeio = pontosX[meio].x;
     
-    if(tamRelativo <= 3){
+    if(tam <= 3){
 
-        menorDistPar = forcaBruta3Pontos(pontosX, &menorDistancia, esquerda, direita);
+        menorDistPar = forcaBruta3Pontos(pontosX, &menorDistancia);
         return menorDistancia;
 
     }
 
-    distanciaEsquerda = calcularMenorDistancia(pontosX, pontosY, esquerda, meio, tam);
-    distanciaDireita = calcularMenorDistancia(pontosX, pontosY, meio + 1, direita, tam);
+    Ponto yEquerda[meio];
+    Ponto yDireita[tam - meio];
+
+    for(int i = 0; i < tam; i++){
+
+        if(pontosY[i].x < xMeio){
+
+            yEquerda[itrYEsquerda] = pontosY[i];
+            itrYEsquerda++;
+
+        }
+
+        else{
+
+            yDireita[itrYDireita] = pontosY[i];
+            itrYDireita++;
+
+        }
+
+    }
+
+    distanciaEsquerda = calcularMenorDistancia(pontos, pontosX, yEquerda, meio);
+    distanciaDireita = calcularMenorDistancia(pontos, pontosX + meio, yDireita,  tam - meio);
     menorDistancia = min(distanciaEsquerda, distanciaDireita);
+
     aux = (Ponto*) malloc (tam * sizeof (Ponto));
 
-    for(int i = esquerda; i <= direita; i++){
+    for(int i = 0; i < tam; i++){
 
         if(modulo(pontosY[i].x - xMeio) < menorDistancia){
 
@@ -243,7 +267,7 @@ double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, in
             
     }
 
-    menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia, tam);
+    menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia);
 
     free(aux);
 
@@ -251,9 +275,9 @@ double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, in
 
 }
 
-double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia, int tam){
+double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia){
 
-    for(int i = 0; i < tam - 1; i++){
+    for(int i = 0; i < itr; i++){
 
         int j = i + 1;
 
