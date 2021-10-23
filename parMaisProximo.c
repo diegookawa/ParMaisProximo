@@ -11,7 +11,7 @@ typedef struct ponto {
 
 Ponto* lerArquivo(char nomeArquivo[], int *tam);
 void imprimirVetor(Ponto pontos[], int tam);
-Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia);
+Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia, int esquerda, int direita);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
@@ -36,7 +36,7 @@ int main(){
 
     free(pontosX);
     free(pontosY);
-    
+
     return 0;
 
 }
@@ -75,7 +75,7 @@ void imprimirVetor(Ponto pontos[], int tam){
 
 }
 
-Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia){
+Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia, int esquerda, int direita){
 
     Ponto *menorDistPar;
 
@@ -83,9 +83,9 @@ Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia){
 
     (*distancia) = calcularDistanciaPontos(pontos[0], pontos[1]);
 
-    for(int i = 0; i < 3; i++){
+    for(int i = esquerda; i < direita - esquerda + 1; i++){
 
-        for(int j = i + 1; j < 3; j++){
+        for(int j = i + 1; j < direita - esquerda + 1; j++){
 
             float aux = calcularDistanciaPontos(pontos[i], pontos[j]);
 
@@ -222,7 +222,7 @@ double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, in
     
     if(tamRelativo <= 3){
 
-        menorDistPar = forcaBruta3Pontos(pontosX, &menorDistancia);
+        menorDistPar = forcaBruta3Pontos(pontosX, &menorDistancia, esquerda, direita);
         return menorDistancia;
 
     }
@@ -232,7 +232,7 @@ double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int esquerda, in
     menorDistancia = min(distanciaEsquerda, distanciaDireita);
     aux = (Ponto*) malloc (tam * sizeof (Ponto));
 
-    for(int i = 0; i < tam; i++){
+    for(int i = esquerda; i <= direita; i++){
 
         if(modulo(pontosY[i].x - xMeio) < menorDistancia){
 
