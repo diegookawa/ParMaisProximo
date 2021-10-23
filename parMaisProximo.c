@@ -30,8 +30,8 @@ int main(){
     int tam;
     double menorDistancia;
 
-    pontosX = lerArquivo("teste.txt", &tam);
-    pontosY = lerArquivo("teste.txt", &tam);
+    pontosX = lerArquivo("auxiliar/input.txt", &tam);
+    pontosY = lerArquivo("auxiliar/input.txt", &tam);
 
     imprimirParMaisProximo(pontosX, pontosY, tam, &menorDistancia);
     //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
@@ -60,7 +60,7 @@ Ponto* lerArquivo(char nomeArquivo[], int *tam){
     fscanf(arquivo, "%d", tam);
 
     pontos = (Ponto*) malloc ((*tam) * sizeof (Ponto));
-
+    
     for(int i = 0; i < (*tam); i++)
         fscanf(arquivo, "%lf %lf", &pontos[i].x, &pontos[i].y);
         
