@@ -15,9 +15,11 @@ Ponto* forcaBruta3Pontos(Ponto pontos[], double *distancia);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
-void imprimirParMaisProximo(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia);
-double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam);
+void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia);
+double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam);
 double calcularMenorDistCombinacao(Ponto pontos[], int itr, double distancia);
+void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], int tam, double xMeio, int *itrYEsquerda, int *itrYDireita);
+void preencherVetorFronteira(Ponto pontosY[], Ponto aux[], int tam, int *itrAux, int menorDistancia, int xMeio);
 double min(double x, double y);
 double modulo(double num);
 double algoritmoForcaBruta(Ponto pontos[], int tam);
@@ -28,16 +30,14 @@ int main(){
     int tam;
     double menorDistancia;
 
-    pontos = lerArquivo("teste.txt", &tam);
     pontosX = lerArquivo("teste.txt", &tam);
     pontosY = lerArquivo("teste.txt", &tam);
 
-    imprimirParMaisProximo(pontos, pontosX, pontosY, tam, &menorDistancia);
+    imprimirParMaisProximo(pontosX, pontosY, tam, &menorDistancia);
     //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
 
     free(pontosX);
     free(pontosY);
-    free(pontos);
 
     return 0;
 
@@ -204,21 +204,21 @@ void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coo
 
 }
 
-void imprimirParMaisProximo(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia){
+void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, double *menorDistancia){
 
     mergeSort(pontosX, 0, tam - 1, 'x');  
     mergeSort(pontosY, 0, tam - 1, 'y');  
 
-    (*menorDistancia) = calcularMenorDistancia(pontos, pontosX, pontosY, tam);
+    (*menorDistancia) = calcularMenorDistancia(pontosX, pontosY, tam);
 
     printf("%lf", (*menorDistancia));
 
 }
 
-double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], int tam){
+double calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
 
     int meio = tam / 2, itrAux = 0, itrYEsquerda = 0, itrYDireita = 0;
-    Ponto *menorDistPar, *aux, *pontosXDireita = pontosX + meio, yEquerda[meio], yDireita[tam - meio];;
+    Ponto *menorDistPar, *aux, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];;
     double menorDistancia, distanciaEsquerda, distanciaDireita, xMeio, menorDistCombinacao;
     xMeio = pontosX[meio].x;
     
@@ -229,46 +229,58 @@ double calcularMenorDistancia(Ponto pontos[], Ponto pontosX[], Ponto pontosY[], 
 
     }
 
-    for(int i = 0; i < tam; i++){
+    preencherSubVetoresY(pontosY, yEsquerda, yDireita, tam, xMeio, &itrYEsquerda, &itrYDireita);
 
-        if(pontosY[i].x < xMeio){
-
-            yEquerda[itrYEsquerda] = pontosY[i];
-            itrYEsquerda++;
-
-        }
-
-        else{
-
-            yDireita[itrYDireita] = pontosY[i];
-            itrYDireita++;
-
-        }
-
-    }
-
-    distanciaEsquerda = calcularMenorDistancia(pontos, pontosX, yEquerda, meio);
-    distanciaDireita = calcularMenorDistancia(pontos, pontosXDireita, yDireita,  tam - meio);
+    distanciaEsquerda = calcularMenorDistancia(pontosX, yEsquerda, meio);
+    distanciaDireita = calcularMenorDistancia(pontosXDireita, yDireita,  tam - meio);
     menorDistancia = min(distanciaEsquerda, distanciaDireita);
 
     aux = (Ponto*) malloc (tam * sizeof (Ponto));
 
-    for(int i = 0; i < tam; i++){
-
-        if(modulo(pontosY[i].x - xMeio) < menorDistancia){
-
-            aux[itrAux] = pontosY[i];
-            itrAux++;
-
-        }
-            
-    }
+    preencherVetorFronteira(pontosY, aux, tam, &itrAux, menorDistancia, xMeio);
 
     menorDistCombinacao = calcularMenorDistCombinacao(aux, itrAux, menorDistancia);
 
     free(aux);
 
     return min(menorDistancia, menorDistCombinacao);
+
+}
+
+void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], int tam, double xMeio, int *itrYEsquerda, int *itrYDireita){
+
+    for(int i = 0; i < tam; i++){
+
+        if(pontosY[i].x < xMeio){
+
+            yEsquerda[(*itrYEsquerda)] = pontosY[i];
+            (*itrYEsquerda)++;
+
+        }
+
+        else{
+
+            yDireita[(*itrYDireita)] = pontosY[i];
+            (*itrYDireita)++;
+
+        }
+
+    }
+
+}
+
+void preencherVetorFronteira(Ponto pontosY[], Ponto aux[], int tam, int *itrAux, int menorDistancia, int xMeio){
+
+    for(int i = 0; i < tam; i++){
+
+        if(modulo(pontosY[i].x - xMeio) < menorDistancia){
+
+            aux[(*itrAux)] = pontosY[i];
+            (*itrAux)++;
+
+        }
+            
+    }
 
 }
 
