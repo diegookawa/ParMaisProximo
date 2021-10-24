@@ -9,7 +9,7 @@ typedef struct ponto {
 
 } Ponto;
 
-typedef struct distanciaPar{
+typedef struct distanciaPar {
 
     Ponto p1;
     Ponto p2;
