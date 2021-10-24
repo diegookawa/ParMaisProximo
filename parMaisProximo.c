@@ -216,7 +216,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
     DistanciaPar distanciaParEsquerda, distanciaParDireita, distanciaPar, distanciaParCombinacao;
     int meio = tam / 2, itrFronteira = 0, itrYEsquerda = 0, itrYDireita = 0;
     Ponto *fronteira, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];
-    double menorDistancia, xMeio = pontosX[meio].x;
+    double xMeio = pontosX[meio].x;
     
     if(tam <= 3) return forcaBruta3Pontos(pontosX);
 
@@ -228,7 +228,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
 
     fronteira = (Ponto*) malloc (tam * sizeof (Ponto));
 
-    preencherVetorFronteira(pontosY, fronteira, tam, &itrFronteira, menorDistancia, xMeio);
+    preencherVetorFronteira(pontosY, fronteira, tam, &itrFronteira, distanciaPar.distancia, xMeio);
 
     distanciaParCombinacao = calcularMenorDistCombinacao(fronteira, itrFronteira, distanciaPar);
 
