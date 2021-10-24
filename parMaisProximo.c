@@ -19,15 +19,15 @@ typedef struct distanciaPar {
 
 Ponto* lerArquivo(char nomeArquivo[], int *tam);
 DistanciaPar forcaBruta3Pontos(Ponto pontos[]);
-double calcularDistanciaPontos(Ponto p1, Ponto p2);
+DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam);
+DistanciaPar calcularMenorDistCombinacao(Ponto pontos[], int itr, DistanciaPar menorDistanciaPar);
+DistanciaPar min(DistanciaPar p1, DistanciaPar p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
 void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, DistanciaPar distanciaPar);
-DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam);
-DistanciaPar calcularMenorDistCombinacao(Ponto pontos[], int itr, DistanciaPar menorDistanciaPar);
 void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], int tam, double xMeio, int *itrYEsquerda, int *itrYDireita);
 void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, int menorDistancia, int xMeio);
-DistanciaPar min(DistanciaPar p1, DistanciaPar p2);
+double calcularDistanciaPontos(Ponto p1, Ponto p2);
 double modulo(double num);
 double algoritmoForcaBruta(Ponto pontos[], int tam);
 
