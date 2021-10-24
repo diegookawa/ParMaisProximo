@@ -18,7 +18,6 @@ typedef struct distanciaPar{
 } DistanciaPar;
 
 Ponto* lerArquivo(char nomeArquivo[], int *tam);
-void imprimirVetor(Ponto pontos[], int tam);
 DistanciaPar forcaBruta3Pontos(Ponto pontos[]);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
@@ -75,13 +74,6 @@ Ponto* lerArquivo(char nomeArquivo[], int *tam){
     fclose(arquivo);
 
     return pontos;
-
-}
-
-void imprimirVetor(Ponto pontos[], int tam){
-
-    for(int i = 0; i < tam; i++)
-        printf("%lf %lf\n", pontos[i].x, pontos[i].y);
 
 }
 
@@ -163,7 +155,7 @@ void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coo
 
         }
 
-        else{
+        else {
 
             if(pontos[itrDireita].y > pontos[itrEsquerda].y){
 
@@ -224,8 +216,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
     DistanciaPar distanciaParEsquerda, distanciaParDireita, distanciaPar, distanciaParCombinacao;
     int meio = tam / 2, itrFronteira = 0, itrYEsquerda = 0, itrYDireita = 0;
     Ponto *fronteira, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];
-    double menorDistancia, xMeio;
-    xMeio = pontosX[meio].x;
+    double menorDistancia, xMeio = pontosX[meio].x;
     
     if(tam <= 3)
         return forcaBruta3Pontos(pontosX);
