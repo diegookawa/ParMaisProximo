@@ -37,7 +37,6 @@ int main(){
     Ponto *pontos, *pontosX, *pontosY;
     DistanciaPar distanciaPar;
     int tam;
-    double menorDistancia;
 
     pontosX = lerArquivo("auxiliar/input.txt", &tam);
     pontosY = lerArquivo("auxiliar/input.txt", &tam);
@@ -305,7 +304,6 @@ DistanciaPar calcularMenorDistCombinacao(Ponto pontos[], int itr, DistanciaPar m
 
             }
                 
-
             j++;
 
         }
