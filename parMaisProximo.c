@@ -27,7 +27,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam);
 DistanciaPar calcularMenorDistCombinacao(Ponto pontos[], int itr, DistanciaPar menorDistanciaPar);
 void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], int tam, double xMeio, int *itrYEsquerda, int *itrYDireita);
 void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, int menorDistancia, int xMeio);
-double min(double x, double y);
+DistanciaPar min(DistanciaPar p1, DistanciaPar p2);
 double modulo(double num);
 double algoritmoForcaBruta(Ponto pontos[], int tam);
 
@@ -218,16 +218,13 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
     Ponto *fronteira, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];
     double menorDistancia, xMeio = pontosX[meio].x;
     
-    if(tam <= 3)
-        return forcaBruta3Pontos(pontosX);
+    if(tam <= 3) return forcaBruta3Pontos(pontosX);
 
     preencherSubVetoresY(pontosY, yEsquerda, yDireita, tam, xMeio, &itrYEsquerda, &itrYDireita);
 
     distanciaParEsquerda = calcularMenorDistancia(pontosX, yEsquerda, meio);
     distanciaParDireita = calcularMenorDistancia(pontosXDireita, yDireita,  tam - meio);
-    menorDistancia = min(distanciaParEsquerda.distancia, distanciaParDireita.distancia);
-
-    distanciaPar = (distanciaParEsquerda.distancia == menorDistancia) ? distanciaParEsquerda : distanciaParDireita;
+    distanciaPar = min(distanciaParEsquerda, distanciaParDireita);
 
     fronteira = (Ponto*) malloc (tam * sizeof (Ponto));
 
@@ -237,7 +234,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
 
     free(fronteira);
 
-    return menorDistancia < distanciaParCombinacao.distancia ? distanciaPar : distanciaParCombinacao;
+    return distanciaPar.distancia < distanciaParCombinacao.distancia ? distanciaPar : distanciaParCombinacao;
 
 }
 
@@ -305,9 +302,9 @@ DistanciaPar calcularMenorDistCombinacao(Ponto pontos[], int itr, DistanciaPar m
 
 }
 
-double min(double x, double y){
+DistanciaPar min(DistanciaPar p1, DistanciaPar p2){
 
-    return x > y ? y : x;
+    return p1.distancia > p2.distancia ? p2 : p1;
 
 }
 
