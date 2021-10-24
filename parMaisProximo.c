@@ -105,11 +105,7 @@ DistanciaPar forcaBruta3Pontos(Ponto pontos[]){
 
 double calcularDistanciaPontos(Ponto p1, Ponto p2){
 
-    double distancia;
-
-    distancia = sqrt(pow((p1.x - p2.x) , 2) + pow((p1.y - p2.y), 2));
-
-    return distancia;
+    return sqrt(pow((p1.x - p2.x) , 2) + pow((p1.y - p2.y), 2));
 
 }
 
