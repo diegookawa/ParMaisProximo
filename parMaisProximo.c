@@ -26,7 +26,7 @@ void mergeSort(Ponto pontos[], int esquerda, int direita, char coordenada);
 void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coordenada);
 void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, DistanciaPar distanciaPar);
 void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], int tam, double xMeio, int *itrYEsquerda, int *itrYDireita);
-void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, double menorDistancia, int xMeio);
+void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, double menorDistancia, double xMeio);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 double modulo(double num);
 double algoritmoForcaBruta(Ponto pontos[], int tam);
@@ -256,7 +256,7 @@ void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], 
 
 }
 
-void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, double menorDistancia, int xMeio){
+void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, double menorDistancia, double xMeio){
 
     for(int i = 0; i < tam; i++){
 
