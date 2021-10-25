@@ -205,7 +205,9 @@ void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, Distancia
 
     distanciaPar = calcularMenorDistancia(pontosX, pontosY, tam);
 
-    printf("X1: %lf   Y1: %lf\nX2: %lf   Y2 %lf\nDistancia: %lf\n", distanciaPar.p1.x, distanciaPar.p1.y, distanciaPar.p2.x, distanciaPar.p2.y, distanciaPar.distancia);
+    //tempo distancia x1 y1 x2 y2
+    printf("%f.6 %f.6 %f.6 %f.6 %f.6 %f.6\n", 0.0, distanciaPar.distancia, distanciaPar.p1.x, distanciaPar.p1.y, distanciaPar.p2.x, distanciaPar.p2.y);
+    //printf("X1: %lf   Y1: %lf\nX2: %lf   Y2 %lf\nDistancia: %lf\n", distanciaPar.p1.x, distanciaPar.p1.y, distanciaPar.p2.x, distanciaPar.p2.y, distanciaPar.distancia);
 
 }
 
