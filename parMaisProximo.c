@@ -31,14 +31,16 @@ double calcularDistanciaPontos(Ponto p1, Ponto p2);
 double modulo(double num);
 double algoritmoForcaBruta(Ponto pontos[], int tam);
 
-int main(){
+int main(int argc, char *argv[]){
 
     Ponto *pontos, *pontosX, *pontosY;
     DistanciaPar distanciaPar;
     int tam;
 
-    pontosX = lerArquivo("auxiliar/input.txt", &tam);
-    pontosY = lerArquivo("auxiliar/input.txt", &tam);
+    char *nome = (argc == 2) ? argv[1] : "input.txt";
+
+    pontosX = lerArquivo(nome, &tam);
+    pontosY = lerArquivo(nome, &tam);
 
     imprimirParMaisProximo(pontosX, pontosY, tam, distanciaPar);
     //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
