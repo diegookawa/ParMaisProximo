@@ -1,5 +1,5 @@
 all:
-	gcc parMaisProximo.c -o parMaisProximo -lm
+	gcc closest.c -o closest -lm
 
 clean:
-	rm -f parMaisProximo;
+	rm -f closest;
