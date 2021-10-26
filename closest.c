@@ -213,26 +213,28 @@ void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, Distancia
 
 DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
 
+    if(tam <= 3) return forcaBruta3Pontos(pontosX);
+
     DistanciaPar distanciaParEsquerda, distanciaParDireita, distanciaPar, distanciaParCombinacao;
     int meio = tam / 2, itrFronteira = 0, itrYEsquerda = 0, itrYDireita = 0;
-    Ponto *fronteira, *pontosXDireita = pontosX + meio, yEsquerda[meio], yDireita[tam - meio];
     double xMeio = pontosX[meio].x;
-    
-    if(tam <= 3) return forcaBruta3Pontos(pontosX);
+    Ponto *yEsquerda = (Ponto*) malloc (tam * sizeof (Ponto));
+    Ponto *yDireita = (Ponto*) malloc (tam * sizeof (Ponto));
 
     preencherSubVetoresY(pontosY, yEsquerda, yDireita, tam, xMeio, &itrYEsquerda, &itrYDireita);
 
     distanciaParEsquerda = calcularMenorDistancia(pontosX, yEsquerda, meio);
-    distanciaParDireita = calcularMenorDistancia(pontosXDireita, yDireita,  tam - meio);
+    distanciaParDireita = calcularMenorDistancia(pontosX + meio, yDireita, tam - meio);
     distanciaPar = min(distanciaParEsquerda, distanciaParDireita);
 
-    fronteira = (Ponto*) malloc (tam * sizeof (Ponto));
-
+    free(yEsquerda);
+    
+    Ponto *fronteira = yDireita;
     preencherVetorFronteira(pontosY, fronteira, tam, &itrFronteira, distanciaPar.distancia, xMeio);
 
     distanciaParCombinacao = calcularMenorDistCombinacao(fronteira, itrFronteira, distanciaPar);
 
-    free(fronteira);
+    free(yDireita);
 
     return distanciaPar.distancia < distanciaParCombinacao.distancia ? distanciaPar : distanciaParCombinacao;
 
