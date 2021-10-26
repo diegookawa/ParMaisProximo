@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 typedef struct ponto {
     
@@ -37,7 +38,7 @@ int main(int argc, char *argv[]){
     DistanciaPar distanciaPar;
     int tam;
 
-    char *nome = (argc == 2) ? argv[1] : "input.txt";
+    char *nome = (argc > 1) ? argv[1] : "input.txt";
 
     pontosX = lerArquivo(nome, &tam);
     pontosY = lerArquivo(nome, &tam);
@@ -200,13 +201,15 @@ void combinarMerge(Ponto pontos[], int esquerda, int direita, int meio, char coo
 
 void imprimirParMaisProximo(Ponto pontosX[], Ponto pontosY[], int tam, DistanciaPar distanciaPar){
 
+    clock_t inicio = clock();
+
     mergeSort(pontosX, 0, tam - 1, 'x');  
     mergeSort(pontosY, 0, tam - 1, 'y');  
 
     distanciaPar = calcularMenorDistancia(pontosX, pontosY, tam);
 
     //tempo distancia x1 y1 x2 y2
-    printf("%.6f %.6f %.6f %.6f %.6f %.6f\n", 0.0, distanciaPar.distancia, distanciaPar.p1.x, distanciaPar.p1.y, distanciaPar.p2.x, distanciaPar.p2.y);
+    printf("%.6f %.6f %.6f %.6f %.6f %.6f\n", (clock() - inicio)/(double)CLOCKS_PER_SEC, distanciaPar.distancia, distanciaPar.p1.x, distanciaPar.p1.y, distanciaPar.p2.x, distanciaPar.p2.y);
     //printf("X1: %lf   Y1: %lf\nX2: %lf   Y2 %lf\nDistancia: %lf\n", distanciaPar.p1.x, distanciaPar.p1.y, distanciaPar.p2.x, distanciaPar.p2.y, distanciaPar.distancia);
 
 }
