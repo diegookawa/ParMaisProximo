@@ -1,3 +1,14 @@
+/*
+    Disciplina: Projeto e Análise de Algoritmos
+    Turma: S73
+    UTFPR - Curitiba
+
+    Alunos: 
+        Diego Henrique Arenas Okawa - 2127890
+        Louis Brommelstroet - 2127997
+        Ellejeane Camila Marques Ferreira dos Santos - 1904965
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -30,7 +41,6 @@ void preencherSubVetoresY(Ponto pontosY[], Ponto yEsquerda[], Ponto yDireita[], 
 void preencherVetorFronteira(Ponto pontosY[], Ponto fronteira[], int tam, int *itrFronteira, double menorDistancia, double xMeio);
 double calcularDistanciaPontos(Ponto p1, Ponto p2);
 double modulo(double num);
-double algoritmoForcaBruta(Ponto pontos[], int tam);
 
 int main(int argc, char *argv[]){
 
@@ -44,7 +54,6 @@ int main(int argc, char *argv[]){
     pontosY = lerArquivo(nome, &tam);
 
     imprimirParMaisProximo(pontosX, pontosY, tam, distanciaPar);
-    //printf("\n%lf", algoritmoForcaBruta(pontosX, tam));
 
     free(pontosX);
     free(pontosY);
@@ -221,6 +230,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
     DistanciaPar distanciaParEsquerda, distanciaParDireita, distanciaPar, distanciaParCombinacao;
     int meio = tam / 2, itrFronteira = 0, itrYEsquerda = 0, itrYDireita = 0;
     double xMeio = pontosX[meio].x;
+
     Ponto *yEsquerda = (Ponto*) malloc (tam * sizeof (Ponto));
     Ponto *yDireita = (Ponto*) malloc (tam * sizeof (Ponto));
 
@@ -233,6 +243,7 @@ DistanciaPar calcularMenorDistancia(Ponto pontosX[], Ponto pontosY[], int tam){
     free(yEsquerda);
     
     Ponto *fronteira = yDireita;
+
     preencherVetorFronteira(pontosY, fronteira, tam, &itrFronteira, distanciaPar.distancia, xMeio);
 
     distanciaParCombinacao = calcularMenorDistCombinacao(fronteira, itrFronteira, distanciaPar);
@@ -316,25 +327,5 @@ DistanciaPar min(DistanciaPar p1, DistanciaPar p2){
 double modulo(double num){
 
     return num >= 0 ? num : (-1) * num;
-
-}
-
-double algoritmoForcaBruta(Ponto pontos[], int tam){
-
-    double distancia = calcularDistanciaPontos(pontos[0], pontos[1]);
-
-    for(int i = 0; i < tam; i++){
-
-        for(int j = 0; j < tam; j++){
-
-            double aux = calcularDistanciaPontos(pontos[i], pontos[j]);
-            if(aux < distancia && aux != 0)
-                distancia = aux;
-
-        }
-
-    }
-
-    return distancia;
 
 }
